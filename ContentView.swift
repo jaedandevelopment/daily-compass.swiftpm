@@ -21,6 +21,11 @@ struct ContentView: View {
     
     @State var capacityScore: Double = 0
     
+    @State var taskBudget = 100
+    
+    
+//
+    
     var body: some View {
         //greeting and date
 //        VStack {
@@ -275,18 +280,99 @@ struct ContentView: View {
         energyValue = 0;
         stressValue = 0;
         capacityScore = 0;
+        taskBudget = 100;
     }
     //allocator to show the type of tasks/allocate tasks
     func taskAllocator() {
         if capacityScore > 3.8 && capacityScore <= 5.0 {
             print("You're vibing, here's your high tasks")
+            print (moodValue, energyValue, stressValue)
+            priorityTasks()
+            if taskBudget >= 50 && taskBudget >= 0 {
+                 print("You're doing great, you can afford to do more tasks!")
+                for task in Tasks {
+                    //this checks to to see if taskbudget is less than or equal to the next task in tasklist.
+                    //if this is <= to the current remaining task budget than the loop stops and no more tasks are allocated
+                    if taskBudget <= task.budget {
+                        break
+                    }
+                    // added () around task.level or argument to check to see if task.level isActive and is med or high
+                    if task.isActive && (task.level == "high" || task.level == "med") {
+                        print("High Tasks", task.taskName, "Remaining Budget", taskBudget)
+                        taskBudget = taskBudget - task.budget
+                    }
+                }
+                print("remaining budget: ", taskBudget)
+            }
+            print("Remaining task budget:", taskBudget)
         } else if capacityScore >= 2.5 && capacityScore < 3.8{
             print("You're having a decent, here's your medium tasks")
+            priorityTasks()
+            if taskBudget > 50 && taskBudget >= 0 {
+                 print("You have some room, here are some other tasks")
+                for task in Tasks {
+                    //this checks to to see if taskbudget is less than or equal to the next task in tasklist.
+                    //if this is <= to the current remaining task budget than the loop stops and no more tasks are allocated
+                    if taskBudget <= task.budget {
+                        break
+                    }
+                    // added () around task.level or argument to check to see if task.level isActive and is med or high
+                    if task.isActive &&  task.level == "med" {
+                        print("Medium Tasks:", task.taskName, "Remaining Budget:", taskBudget)
+                        taskBudget = taskBudget - task.budget
+                        
+                    }
+                }
+                print("remaining budget: ", taskBudget)
+            }
         } else {
-            print("Not such a great one, here's your low tasks")
+            print("Not such a great one, here's your priority tasks")
+            priorityTasks()
         }
     }
     
+    //function to apply all priority tasks by default where 'priority' is set to true
+    func priorityTasks() {
+        //loops through tasklist and shows all tasks where priority and isActive is true
+        for task in Tasks {
+            //checks to see if task is priority and isActive
+            //currently only applies task which have level of low,
+            //may change this to allow for 'med' or 'high' priority tasks to be added
+            if task.priority && task.isActive && task.level == "low" {
+                taskBudget = taskBudget - task.budget
+                print("Priority Tasks:", task.taskName)
+//                print(taskBudget, "new task budget")
+            }
+        }
+    }
+    
+    struct TaskList: Identifiable {
+        let id = UUID() // generates a automatic id 'hash' doesn't need to be declared for array object)
+        let taskName: String
+        var isActive: Bool
+        var budget: Int
+        var level: String
+        var priority: Bool
+    }
+    
+    var Tasks: [TaskList] = [
+        
+        TaskList(taskName: "make bed", isActive: true, budget: 5, level: "low", priority: true),
+        TaskList(taskName: "make breakfast", isActive: false, budget: 10, level: "low", priority: true),
+        TaskList(taskName: "do laundry", isActive: false, budget: 10, level: "low", priority: true),
+        TaskList(taskName: "drink 3L water", isActive: true, budget: 5, level: "low", priority: true),
+        TaskList(taskName: "meal prep", isActive: true, budget: 15, level: "med", priority: true),
+        TaskList(taskName: "grocery shopping", isActive: false, budget: 20, level: "med", priority: false),
+        TaskList(taskName: "walk the dog", isActive: false, budget: 25, level: "med", priority: true),
+        TaskList(taskName: "clean kitchen", isActive: true, budget: 20, level: "med", priority: true),
+        TaskList(taskName: "edit video", isActive: false, budget: 30, level: "high", priority: false),
+        TaskList(taskName: "study for exam", isActive: true, budget: 45, level: "high", priority: true),
+        TaskList(taskName: "create new yearly goals", isActive: false, budget:35, level: "high", priority: false),
+        TaskList(taskName: "learn japanese", isActive: true, budget: 40, level: "high", priority: false),
+        
+    ]
+    
+     
 }
 
    
