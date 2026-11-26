@@ -1,5 +1,6 @@
 import SwiftUI
 
+
 struct ContentView: View {
     
     
@@ -23,54 +24,74 @@ struct ContentView: View {
     
     @State var taskBudget = 100
     
+    //intialisation of 
+    @State var allocatedTasks: [TaskList] = []
+    @State var hasCalculated: Bool = false
     
+    //for greeting function
+    //Calendar.current.component(.hour, from: Date() pulls the time based on the device time.
+    
+    var greeting: String {
+        let hour = Calendar.current.component(.hour, from: Date())
+          if hour < 12 { return "Good Morning" }
+          if hour < 18 { return "Good Mfternoon" }
+        return "Good Evening"
+    }
 //
     
     var body: some View {
         //greeting and date
-//        VStack {
-//            Text(Date.now, format: .dateTime.weekday().day().month())
-//            Text("Good Morning, User!").font(Font.title2.bold())
-//        }
-//        
-//        HStack(spacing: 12) {
-//            //looping through moods array and taking id - 'index' of option and creating a button
-//            ForEach(moods, id: \.self) {
-//                mood in Button(mood) {
-//                    var moodSelection = true
-//                    
-//                }
-//            }
-//        }
-//        HStack(spacing: 12) {
-//            //looping through moods array and taking id - 'index' of option and creating a button
-//            ForEach(energyLevel, id: \.self) {
-//                energy in Button(energy) {
-//                    
-//                }
-//            }
-//        }
-//        HStack(spacing: 12) {
-//            //looping through moods array and taking id - 'index' of option and creating a button
-//            ForEach(stressLevel, id: \.self) {
-//                stress in Button(stress) {
-//                    
-//                }
-//            }
-//        }
         
-        
-       
-        
-        
-//// m/e/s -> selector
+            VStack(alignment: .leading) {
+                Text(Date.now, format: .dateTime.weekday().day().month())
+                Text("\(greeting), User!").font(Font.title2.bold())
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            .padding()
+            
+            //
+            //        HStack(spacing: 12) {
+            //            //looping through moods array and taking id - 'index' of option and creating a button
+            //            ForEach(moods, id: \.self) {
+            //                mood in Button(mood) {
+            //                    var moodSelection = true
+            //
+            //                }
+            //            }
+            //        }
+            //        HStack(spacing: 12) {
+            //            //looping through moods array and taking id - 'index' of option and creating a button
+            //            ForEach(energyLevel, id: \.self) {
+            //                energy in Button(energy) {
+            //
+            //                }
+            //            }
+            //        }
+            //        HStack(spacing: 12) {
+            //            //looping through moods array and taking id - 'index' of option and creating a button
+            //            ForEach(stressLevel, id: \.self) {
+            //                stress in Button(stress) {
+            //
+            //                }
+            //            }
+            //        }
+            
+            
+            
+            
+            
+            // m/e/s selector
+                           
                 VStack {
-                    Text("Mood - How you feel?").padding(.bottom)
+                    Text("What is your vibe?")
+                        .font(.headline)
+                        .fontWeight(Font.Weight.bold)
+                    Text("Mood - How you feel?")
+                        
                     HStack {
                         //low button
                         Button {
-
-                             moodSelection.toggle()
+                            moodSelection.toggle()
                             if moodSelection {
                                 moodValue = 1
                             }
@@ -83,10 +104,10 @@ struct ContentView: View {
                         };
                         Button {
                             moodSelection.toggle()
-                           if moodSelection {
-                               moodValue = 2
-                           }
-                          
+                            if moodSelection {
+                                moodValue = 2
+                            }
+                            
                         } label: {
                             VStack{
                                 Text("😕")
@@ -95,10 +116,10 @@ struct ContentView: View {
                         };
                         Button {
                             moodSelection.toggle()
-                           if moodSelection {
-                               moodValue = 3
-                           }
-                          
+                            if moodSelection {
+                                moodValue = 3
+                            }
+                            
                         } label: {
                             VStack{
                                 Text("😐")
@@ -107,10 +128,10 @@ struct ContentView: View {
                         };
                         Button {
                             moodSelection.toggle()
-                           if moodSelection {
-                               moodValue = 4
-                           }
-                          
+                            if moodSelection {
+                                moodValue = 4
+                            }
+                            
                         } label: {
                             VStack{
                                 Text("🙂")
@@ -119,21 +140,21 @@ struct ContentView: View {
                         };
                         Button {
                             moodSelection.toggle()
-                           if moodSelection {
-                               moodValue = 5
-                           }
-                          
+                            if moodSelection {
+                                moodValue = 5
+                            }
+                            
                         } label: {
                             VStack{
                                 Text("😁")
                                 Text("Great")
                             }
                         }
-        
-                    }.padding(.bottom)
-        
+                        
+                    }.padding()
+                    
                     VStack{
-                        Text("Energy Level").padding(.bottom)
+                        Text("Energy Level")
                         HStack{
                             Button {
                                 energySelection.toggle()
@@ -188,7 +209,7 @@ struct ContentView: View {
                         }
                     }
                     VStack{
-                        Text("Stress Level").padding(.bottom)
+                        Text("Stress Level")
                         HStack{
                             Button {
                                 stressSelection.toggle()
@@ -214,7 +235,6 @@ struct ContentView: View {
                                 stressSelection.toggle()
                                 if stressSelection {
                                     stressValue = 3
-                                        
                                 }
                             } label: {
                                 VStack{
@@ -223,16 +243,32 @@ struct ContentView: View {
                             }
                         }
                     }
-                    Button {
-                        vibeCalc()
-                    } label: {
-                        Text("Calculate")
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .tint(.blue)
-                    
-                    
                 }
+                .padding()
+                .frame(width: 400, alignment: .init(horizontal: .center, vertical: .top))
+            Button {
+                vibeCalc()
+                
+            } label: {
+                Text("Calculate")
+            }
+            .buttonStyle(.borderedProminent).tint(.blue)
+            
+                if hasCalculated {
+                    Text("Count: \(allocatedTasks.count)")
+                    List {
+                        ForEach(allocatedTasks) { task in
+                            if task.priority == true {
+                                Text("\(task.taskName) - \(task.level) - Priority")
+                            } else {
+                                Text("\(task.taskName) - \(task.level)")
+                            }
+                        }
+                    }
+                } else {
+                    Text("Please select your mood!")
+            }
+        
     }
     
     //vibe calculator function
@@ -260,9 +296,10 @@ struct ContentView: View {
     // if mood, energy and stress are selected than calculate capacityScore
         //when capacityScore is selected 'out of 5' run 'taskAllocator' to show which type of day it is
         if moodSelection == true && energySelection == true && stressSelection == true{
-            
             capacityScore = (energyValue * 0.45) + ((6 - stressValue ) * 0.3) + (moodValue * 0.25)
             taskAllocator()
+            //updated to true if all m/e/s inputs have been selected
+            hasCalculated = true
         } else {
             // if mod or energy or stress selection has not been input then show error prompt to select all inputs
             print("Please select a mood, energy and stress level")
@@ -284,12 +321,13 @@ struct ContentView: View {
     }
     //allocator to show the type of tasks/allocate tasks
     func taskAllocator() {
+        allocatedTasks = []
         if capacityScore > 3.8 && capacityScore <= 5.0 {
             print("You're vibing, here's your high tasks")
             print (moodValue, energyValue, stressValue)
             priorityTasks()
-            if taskBudget >= 50 && taskBudget >= 0 {
-                 print("You're doing great, you can afford to do more tasks!")
+            if taskBudget >= 50 {
+                print("You're doing great, you can afford to do more tasks!")
                 for task in Tasks {
                     //this checks to to see if taskbudget is less than or equal to the next task in tasklist.
                     //if this is <= to the current remaining task budget than the loop stops and no more tasks are allocated
@@ -300,6 +338,8 @@ struct ContentView: View {
                     if task.isActive && (task.level == "high" || task.level == "med") {
                         print("High Tasks", task.taskName, "Remaining Budget", taskBudget)
                         taskBudget = taskBudget - task.budget
+                        //appends allocated tasks to the 'allocatedTask array'. This is array is then used to build the list after calculating
+                        allocatedTasks.append(task)
                     }
                 }
                 print("remaining budget: ", taskBudget)
@@ -320,7 +360,7 @@ struct ContentView: View {
                     if task.isActive &&  task.level == "med" {
                         print("Medium Tasks:", task.taskName, "Remaining Budget:", taskBudget)
                         taskBudget = taskBudget - task.budget
-                        
+                        allocatedTasks.append(task)
                     }
                 }
                 print("remaining budget: ", taskBudget)
@@ -328,6 +368,7 @@ struct ContentView: View {
         } else {
             print("Not such a great one, here's your priority tasks")
             priorityTasks()
+            
         }
     }
     
@@ -342,9 +383,16 @@ struct ContentView: View {
                 taskBudget = taskBudget - task.budget
                 print("Priority Tasks:", task.taskName)
 //                print(taskBudget, "new task budget")
+                //adds priority tasks which have been set by the user to allocated tasks array
+                allocatedTasks.append(task)
             }
         }
     }
+    
+    
+//    enum taskLevel: CaseIterable {
+//        case low, med, high
+//    }
     
     struct TaskList: Identifiable {
         let id = UUID() // generates a automatic id 'hash' doesn't need to be declared for array object)
@@ -360,17 +408,49 @@ struct ContentView: View {
         TaskList(taskName: "make bed", isActive: true, budget: 5, level: "low", priority: true),
         TaskList(taskName: "make breakfast", isActive: false, budget: 10, level: "low", priority: true),
         TaskList(taskName: "do laundry", isActive: false, budget: 10, level: "low", priority: true),
-        TaskList(taskName: "drink 3L water", isActive: true, budget: 5, level: "low", priority: true),
-        TaskList(taskName: "meal prep", isActive: true, budget: 15, level: "med", priority: true),
+        TaskList(taskName: "drink 3L water", isActive: true, budget: 5, level: "low", priority: false),
+        TaskList(taskName: "meal prep", isActive: true, budget: 15, level: "med", priority: false),
         TaskList(taskName: "grocery shopping", isActive: false, budget: 20, level: "med", priority: false),
-        TaskList(taskName: "walk the dog", isActive: false, budget: 25, level: "med", priority: true),
-        TaskList(taskName: "clean kitchen", isActive: true, budget: 20, level: "med", priority: true),
+        TaskList(taskName: "walk the dog", isActive: false, budget: 25, level: "med", priority: false),
+        TaskList(taskName: "clean kitchen", isActive: true, budget: 20, level: "med", priority: false),
         TaskList(taskName: "edit video", isActive: false, budget: 30, level: "high", priority: false),
         TaskList(taskName: "study for exam", isActive: true, budget: 45, level: "high", priority: true),
         TaskList(taskName: "create new yearly goals", isActive: false, budget:35, level: "high", priority: false),
         TaskList(taskName: "learn japanese", isActive: true, budget: 40, level: "high", priority: false),
         
     ]
+    
+//    private let taskList: [TaskLevel] = [
+//        TaskLevel(level: "low"),
+//            TaskList: [
+//                    lowTask(taskName: "make bed", isActive: true, budget: 5, level: "low", priority: true)
+//                 ]
+//    ]
+    
+ 
+//    private var taskList: [taskLevel: [TaskList]] = [
+//        .low: [
+//            TaskList(taskName: "make bed", isActive: true, budget: 5, level: "low", priority: true),
+//            TaskList(taskName: "make breakfast", isActive: false, budget: 10, level: "low", priority: true),
+//            TaskList(taskName: "do laundry", isActive: false, budget: 10, level: "low", priority: true),
+//            TaskList(taskName: "drink 3L water", isActive: true, budget: 5, level: "low", priority: true),
+//        ],
+//        .med: [
+//            TaskList(taskName: "meal prep", isActive: true, budget: 15, level: "med", priority: true),
+//            TaskList(taskName: "grocery shopping", isActive: false, budget: 20, level: "med", priority: false),
+//            TaskList(taskName: "walk the dog", isActive: false, budget: 25, level: "med", priority: true),
+//            TaskList(taskName: "clean kitchen", isActive: true, budget: 20, level: "med", priority: true)
+//        ],
+//        .high: [
+//            TaskList(taskName: "edit video", isActive: false, budget: 30, level: "high", priority: false),
+//            TaskList(taskName: "study for exam", isActive: true, budget: 45, level: "high", priority: true),
+//            TaskList(taskName: "create new yearly goals", isActive: false, budget:35, level: "high", priority: false),
+//            TaskList(taskName: "learn japanese", isActive: true, budget: 40, level: "high", priority: false)
+//        ]
+//    ]
+    
+    
+//    updates greeting 'good morning, afternoon, night' depending on time
     
      
 }
